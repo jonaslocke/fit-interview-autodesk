@@ -1,8 +1,8 @@
 import { FC, useEffect, useMemo, useState } from "react";
-import { ActionsBar } from "./ActionsBar";
+import { GlobalContext } from "../Contexts";
 import { useUserData } from "../hooks/useUserData";
 import { User } from "../types";
-import { SearchContext } from "../Contexts";
+import { ActionsBar } from "./ActionsBar";
 import { NewUserModal } from "./NewUserModal";
 type Props = {};
 
@@ -11,7 +11,7 @@ export const Dashboard: FC<Props> = () => {
 
   const [users, setUsers] = useState<User[]>([]);
   const [search, setSearch] = useState("");
-  const [showModal, setShowModal] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const getUsers = async () => {
     const users = await fetchUsers();
@@ -39,7 +39,7 @@ export const Dashboard: FC<Props> = () => {
   }, []);
 
   return (
-    <SearchContext.Provider value={{ search, setSearch }}>
+    <GlobalContext.Provider value={{ search, setSearch, open, setOpen }}>
       <div className="pa4">
         <h1>Users</h1>
         <ActionsBar />
@@ -80,7 +80,7 @@ export const Dashboard: FC<Props> = () => {
           <NoData />
         )}
       </div>
-      {showModal && <NewUserModal closeMethod={() => setShowModal(false)} />}
-    </SearchContext.Provider>
+      {open && <NewUserModal closeMethod={() => setOpen(false)} />}
+    </GlobalContext.Provider>
   );
 };

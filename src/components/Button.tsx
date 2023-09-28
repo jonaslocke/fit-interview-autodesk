@@ -4,7 +4,7 @@ type Props = {
   rightIcon?: JSX.Element;
   label?: string;
   onClickMethod?: () => void;
-  color?: "primary" | "secondary";
+  color?: "primary" | "secondary" | "transparent";
 };
 
 export const Button: FC<Props> = ({
@@ -14,13 +14,19 @@ export const Button: FC<Props> = ({
   onClickMethod,
   color = "primary",
 }) => {
+  const classes = () => {
+    switch (color) {
+      case "primary":
+        return "bg-primary hover-bg-secondary white";
+      case "secondary":
+        return "bg-secondary hover-bg-primary white";
+      case "transparent":
+        return "bg-transparent hover-bg-secondary primary hover-white";
+    }
+  };
   return (
     <div
-      className={`bg-${
-        color === "primary" ? "primary" : "secondary"
-      } hover-bg-${
-        color === "primary" ? "secondary" : "primary"
-      } white ph3 pv2 f4 cup`}
+      className={`${classes()} ph3 pv2 f4 cup`}
       onClick={() => (onClickMethod ? onClickMethod() : null)}
     >
       {leftIcon ? leftIcon : null}

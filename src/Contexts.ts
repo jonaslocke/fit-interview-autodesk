@@ -1,6 +1,8 @@
 import { createContext } from "react";
 
-export const SearchContext = createContext<{
+export const GlobalContext = createContext<{
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-}>({ search: "", setSearch: () => {} });
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}>({ search: "", setSearch: () => {}, open: true, setOpen: () => {} });

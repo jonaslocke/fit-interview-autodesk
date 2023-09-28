@@ -1,8 +1,8 @@
 import { FormEvent, useContext } from "react";
-import { SearchContext } from "../Contexts";
+import { GlobalContext } from "../Contexts";
 
 export const SearchBar = () => {
-  const { search, setSearch } = useContext(SearchContext);
+  const { search, setSearch } = useContext(GlobalContext);
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSearch("");
