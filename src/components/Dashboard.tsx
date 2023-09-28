@@ -42,7 +42,7 @@ export const Dashboard: FC<Props> = () => {
         <h1>Users</h1>
         <ActionsBar />
         {users.length ? (
-          <table className="w-100 bg-white pa3 br2 mt3 f5">
+          <table className="w-100 bg-white pa3 br2 mt3 f4">
             <thead>
               <tr>
                 {headers.map((head, index) => (
