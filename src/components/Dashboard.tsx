@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { ActionsBar } from "./ActionsBar";
 import { useUserData } from "../hooks/useUserData";
 import { User } from "../types";
@@ -22,9 +22,20 @@ export const Dashboard: FC<Props> = () => {
   const NoData = () => <div>loading...</div>;
   const headers = ["ID", "First Name", "Last Name", "E-mail"];
 
+  const filteredUsers = useMemo(
+    () =>
+      users.filter(({ email, first_name, last_name }) =>
+        [email, first_name, last_name].some((term) =>
+          term.match(RegExp(search, "i"))
+        )
+      ),
+    [search, users]
+  );
+
   useEffect(() => {
     getUsers();
   }, []);
+
   return (
     <SearchContext.Provider value={{ search, setSearch }}>
       <div className="pa4">
@@ -42,7 +53,7 @@ export const Dashboard: FC<Props> = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user, rIndex) => (
+              {filteredUsers.map((user, rIndex) => (
                 <tr key={user.id} className="tc">
                   {Object.values(user).map((prop, index) => (
                     <td
@@ -54,6 +65,13 @@ export const Dashboard: FC<Props> = () => {
                   ))}
                 </tr>
               ))}
+              {filteredUsers.length === 0 && (
+                <tr>
+                  <td colSpan={headers.length} className="tc">
+                    No data to show
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         ) : (
