@@ -1,24 +1,27 @@
-import { useEffect, useState } from "react";
 import { User } from "../types";
+import usersMock from "../mocked.json";
+
+const isMocked = true;
 
 export const useUserData = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const api = `https://fitinterview.free.beeceptor.com/users`;
+  const api = `https://autodesk.free.beeceptor.com/users`;
 
   const fetchUsers = async () => {
+    if (isMocked) {
+      return usersMock as User[];
+    }
     const response = await fetch(api);
     if (response.ok) {
       const data = (await response.json()) as User[];
-      if (data.length) {
-        setUsers(data);
+      if (!data.length) {
+        return [];
       }
+
+      return data;
     }
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
   return {
-    users,
+    fetchUsers,
   };
 };
