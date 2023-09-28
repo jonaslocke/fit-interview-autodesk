@@ -7,7 +7,10 @@ export const ActionsBar = () => {
         leftIcon={<i className="fa-solid fa-plus"></i>}
         label="Create item"
       />
-      <div>1</div>
+      <Button
+        leftIcon={<i className="fa-solid fa-filter"></i>}
+        color="secondary"
+      />
     </div>
   );
 };
