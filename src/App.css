@@ -1,0 +1,35 @@
+body {
+  font-family: "Open Sans", sans-serif;
+  border-color: #dedede;
+}
+
+:root {
+  --primary: #1b3052;
+  --secondary: #4e678f;
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+.primary {
+  color: var(--primary);
+}
+.hover-bg-primary:focus,
+.hover-bg-primary:hover {
+  background-color: var(--primary);
+}
+
+.bg-secondary {
+  background-color: var(--secondary);
+}
+.secondary {
+  color: var(--secondary);
+}
+.hover-bg-secondary:focus,
+.hover-bg-secondary:hover {
+  background-color: var(--secondary);
+}
+
+.cup {
+  cursor: pointer;
+}
