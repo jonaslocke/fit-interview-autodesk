@@ -3,6 +3,7 @@ import { ActionsBar } from "./ActionsBar";
 import { useUserData } from "../hooks/useUserData";
 import { User } from "../types";
 import { SearchContext } from "../Contexts";
+import { NewUserModal } from "./NewUserModal";
 type Props = {};
 
 export const Dashboard: FC<Props> = () => {
@@ -10,6 +11,7 @@ export const Dashboard: FC<Props> = () => {
 
   const [users, setUsers] = useState<User[]>([]);
   const [search, setSearch] = useState("");
+  const [showModal, setShowModal] = useState(true);
 
   const getUsers = async () => {
     const users = await fetchUsers();
@@ -78,6 +80,7 @@ export const Dashboard: FC<Props> = () => {
           <NoData />
         )}
       </div>
+      {showModal && <NewUserModal closeMethod={() => setShowModal(false)} />}
     </SearchContext.Provider>
   );
 };
