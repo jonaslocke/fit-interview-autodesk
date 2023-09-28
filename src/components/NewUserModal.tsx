@@ -1,6 +1,9 @@
-import { FC, FormEvent, useEffect, useState } from "react";
-import { Button } from "./Button";
+import { FC, useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useUserData } from "../hooks/useUserData";
+import { User } from "../types";
+import { Button } from "./Button";
+
 type Props = {
   closeMethod: () => void;
 };
@@ -18,13 +21,29 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
   const handleClose = () => {
     closeMethod();
   };
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<User>();
+  const onSubmit: SubmitHandler<User> = (data) => {
+    data.id = id;
+    console.log(data);
+  };
+  const classes = {
+    input: `input-reset mv3 db w-100 pa3`,
+    label: `db mt4`,
+    span: `db mb2`,
   };
 
   useEffect(() => {
     getUserId();
   }, []);
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
   return (
     <div className="bg-black-80 fixed h-100 left-0 top-0 w-100 pa4">
       <div
@@ -39,8 +58,53 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
           ></i>
         </div>
         <div className="pv3 ph4">
-          <form onSubmit={handleSubmit}>
-            <input type="number" name="" id="" value={id} disabled />
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="w-50 pv4"
+            style={{ marginLeft: "auto", marginRight: "auto" }}
+          >
+            <label className={classes.label} htmlFor="id">
+              <span className={classes.span}>ID</span>
+              <input
+                className={classes.input}
+                value={id}
+                {...register("id")}
+                disabled
+              />
+            </label>
+            <label htmlFor="first_name" className={classes.label}>
+              <span className={classes.span}>First Name</span>
+              <input
+                className={classes.input}
+                {...register("first_name", { required: true })}
+              />
+              {errors.first_name && <span>This field is required</span>}
+            </label>
+            <label htmlFor="first_name" className={classes.label}>
+              <span className={classes.span}>Last Name</span>
+              <input
+                className={classes.input}
+                {...register("last_name", { required: true })}
+              />
+              {errors.last_name && <span>This field is required</span>}
+            </label>
+            <label htmlFor="first_name" className={classes.label}>
+              <span className={classes.span}>E-mail</span>
+              <input
+                className={classes.input}
+                {...register("email", {
+                  required: true,
+                  pattern: /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,
+                })}
+              />
+              {errors.email?.type === "required" && (
+                <span>This field is required</span>
+              )}
+              {errors.email?.type === "pattern" && (
+                <span>this email doesn't match the criteria </span>
+              )}
+            </label>
+            <input type="submit" id="submit-new-user" hidden />
           </form>
         </div>
         <div className="pv3 ph4 bt b--black-30 flex justify-between items-center">
@@ -55,7 +119,9 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
               onClickMethod={() => handleClose()}
             />
             <span className="ml2"></span>
-            <Button label="Create" />
+            <label htmlFor="submit-new-user">
+              <Button label="Create" />
+            </label>
           </div>
         </div>
       </div>
