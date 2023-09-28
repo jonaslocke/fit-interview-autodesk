@@ -18,6 +18,9 @@ body {
 .hover-bg-primary:hover {
   background-color: var(--primary);
 }
+.b--primary {
+  border-color: var(--primary);
+}
 
 .bg-secondary {
   background-color: var(--secondary);
@@ -29,7 +32,14 @@ body {
 .hover-bg-secondary:hover {
   background-color: var(--secondary);
 }
+.b--secondary {
+  border-color: var(--secondary);
+}
 
 .cup {
   cursor: pointer;
+}
+
+.no-focus:focus {
+  outline: none;
 }

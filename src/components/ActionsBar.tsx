@@ -1,4 +1,5 @@
 import { Button } from "./Button";
+import { SearchBar } from "./SearchBar";
 
 export const ActionsBar = () => {
   return (
@@ -7,10 +8,7 @@ export const ActionsBar = () => {
         leftIcon={<i className="fa-solid fa-plus"></i>}
         label="Create item"
       />
-      <Button
-        leftIcon={<i className="fa-solid fa-filter"></i>}
-        color="secondary"
-      />
+      <SearchBar />
     </div>
   );
 };
