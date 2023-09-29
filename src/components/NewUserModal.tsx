@@ -72,7 +72,7 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
       Object.assign(options, { pattern });
     }
     return (
-      <fieldset className="bn ma0 pa0 flex flex-column mb2">
+      <fieldset className="bn ma0 pa0 flex flex-column mb3">
         <label className="mb1" htmlFor={identifier}>
           {text}
         </label>
@@ -86,7 +86,9 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
           <span className="mt1 orange fw6">This field is required</span>
         )}
         {errors[identifier]?.type === "pattern" && (
-          <span className="mt1 orange fw6">this doesn't match the criteria </span>
+          <span className="mt1 orange fw6">
+            this doesn't match the criteria{" "}
+          </span>
         )}
       </fieldset>
     );
@@ -159,7 +161,10 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
             onClick={handleClose}
           ></i>
         </div>
-        <div className="pv2 ph4">
+        <div
+          className="pv2 ph4 w-100"
+          style={{ maxWidth: 720, marginLeft: "auto", marginRight: "auto" }}
+        >
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="pv4"
@@ -177,6 +182,7 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
             />
           </form>
         </div>
+
         <div className={headerFooterClasses()}>
           <label className="cup black-80 mv3" htmlFor="create-another">
             <input
