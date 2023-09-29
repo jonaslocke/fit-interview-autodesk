@@ -9,8 +9,10 @@ type Props = {
 };
 
 export const NewUserModal: FC<Props> = ({ closeMethod }) => {
-  const { fetchUsers } = useUserData();
+  const { fetchUsers, createUser } = useUserData();
   const [id, setId] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [keepOpen, setKeepOpen] = useState(false);
 
   const getUserId = async () => {
     const users = await fetchUsers();
@@ -25,13 +27,31 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<User>();
-  const onSubmit: SubmitHandler<User> = (data) => {
-    data.id = id;
-    console.log(data);
+
+  const onSubmit: SubmitHandler<User> = async (user) => {
+    user.id = id;
+    setLoading(true);
+    const response = await createUser(user);
+
+    if (!response.ok) {
+      alert("Some went wrong on this creation");
+      setLoading(false);
+      return;
+    }
+
+    const userData = await response.json();
+
+    //TODO user feedback
+    console.log(userData);
+
+    setLoading(false);
+    if (!keepOpen) {
+      handleClose();
+    }
   };
+
   const classes = {
     input: `input-reset mv3 db w-100 pa3`,
     label: `db mt4`,
@@ -41,9 +61,7 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
   useEffect(() => {
     getUserId();
   }, []);
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
+
   return (
     <div className="bg-black-80 fixed h-100 left-0 top-0 w-100 pa4">
       <div
@@ -104,12 +122,23 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
                 <span>this email doesn't match the criteria </span>
               )}
             </label>
-            <input type="submit" id="submit-new-user" hidden />
+            <input
+              type="submit"
+              id="submit-new-user"
+              hidden
+              disabled={loading}
+            />
           </form>
         </div>
         <div className="pv3 ph4 bt b--black-30 flex justify-between items-center">
           <label className="cup black-80 mv4" htmlFor="create-another">
-            <input type="checkbox" name="create-another" id="create-another" />
+            <input
+              type="checkbox"
+              name="create-another"
+              id="create-another"
+              checked={keepOpen}
+              onChange={() => setKeepOpen((prev) => !prev)}
+            />
             <span className="ml2">Create another</span>
           </label>
           <div className="flex">
@@ -120,7 +149,7 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
             />
             <span className="ml2"></span>
             <label htmlFor="submit-new-user">
-              <Button label="Create" />
+              <Button label={loading ? "Loading..." : "Create"} />
             </label>
           </div>
         </div>

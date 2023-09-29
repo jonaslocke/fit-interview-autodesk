@@ -20,8 +20,21 @@ export const useUserData = () => {
       return data;
     }
   };
+  const createUser = async (user: User) => {
+    if (!user) {
+      throw new Error();
+    }
+    return await fetch(api, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+  };
 
   return {
     fetchUsers,
+    createUser,
   };
 };
