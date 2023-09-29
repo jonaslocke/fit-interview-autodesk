@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { RegisterOptions, SubmitHandler, useForm } from "react-hook-form";
 import { useToastie } from "../hooks/useToastie";
 import { useUserData } from "../hooks/useUserData";
 import { User } from "../types";
@@ -58,25 +58,102 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
     }
   };
 
-  const classes = {
-    input: `input-reset mv3 db w-100 pa3`,
-    label: `db mt4`,
-    span: `db mb2`,
+  const InputGroupEl = ({
+    text,
+    identifier,
+    disabled,
+    required,
+    pattern,
+    defaultValue,
+  }: InputGroup) => {
+    const options: RegisterOptions<User, keyof User> | undefined = { required };
+
+    if (pattern) {
+      Object.assign(options, { pattern });
+    }
+    return (
+      <fieldset className="bn ma0 pa0 flex flex-column mb2">
+        <label className="mb1" htmlFor={identifier}>
+          {text}
+        </label>
+        <input
+          className="pa2"
+          {...register(identifier, options)}
+          disabled={disabled}
+          defaultValue={defaultValue}
+        />
+        {errors[identifier]?.type === "required" && (
+          <span className="mt1 orange fw6">This field is required</span>
+        )}
+        {errors[identifier]?.type === "pattern" && (
+          <span className="mt1 orange fw6">this doesn't match the criteria </span>
+        )}
+      </fieldset>
+    );
   };
+
+  const headerFooterClasses = (footer: boolean = true) =>
+    `pv2-l pv1 ph4-l ph3 ${
+      footer ? "bt" : "bb"
+    } b--black-30 flex justify-between items-center`;
 
   useEffect(() => {
     getUserId();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  interface InputGroup {
+    identifier: keyof User;
+    text: string;
+    required: boolean;
+    pattern: RegExp | null;
+    disabled: boolean;
+    defaultValue: string | undefined;
+  }
+
+  const inputGroups: InputGroup[] = [
+    {
+      identifier: "id",
+      text: "ID",
+      required: false,
+      pattern: null,
+      disabled: true,
+      defaultValue: id.toString(),
+    },
+    {
+      identifier: "first_name",
+      text: "First name",
+      required: true,
+      pattern: null,
+      disabled: false,
+      defaultValue: undefined,
+    },
+    {
+      identifier: "last_name",
+      text: "Last name",
+      required: true,
+      pattern: null,
+      disabled: false,
+      defaultValue: undefined,
+    },
+    {
+      identifier: "email",
+      text: "E-mail",
+      required: true,
+      pattern: /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,
+      disabled: false,
+      defaultValue: undefined,
+    },
+  ];
+
   return (
-    <div className="bg-black-80 fixed h-100 left-0 top-0 w-100 pa4">
+    <div className="bg-black-80 fixed h-100 left-0 top-0 w-100 pa4-l pa3-ns pa2">
       <div
         className="bg-white w-100 br2 flex flex-column justify-between"
         style={{ minHeight: 300 }}
       >
-        <div className="pv2 ph4 bb b--black-30 flex justify-between items-center">
-          <h3 className="ma0 mv3">Create item</h3>
+        <div className={headerFooterClasses(false)}>
+          <h3 className="ma0 mv3-l mv2">Create item</h3>
           <i
             className="fa-solid fa-circle-xmark cup f4-l f6-m black-30 hover-black-70"
             onClick={handleClose}
@@ -85,50 +162,13 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
         <div className="pv2 ph4">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-50 pv4"
+            className="pv4"
             style={{ marginLeft: "auto", marginRight: "auto" }}
           >
-            <label className={classes.label} htmlFor="id">
-              <span className={classes.span}>ID</span>
-              <input
-                className={classes.input}
-                value={id}
-                {...register("id")}
-                disabled
-              />
-            </label>
-            <label htmlFor="first_name" className={classes.label}>
-              <span className={classes.span}>First Name</span>
-              <input
-                className={classes.input}
-                {...register("first_name", { required: true })}
-              />
-              {errors.first_name && <span>This field is required</span>}
-            </label>
-            <label htmlFor="first_name" className={classes.label}>
-              <span className={classes.span}>Last Name</span>
-              <input
-                className={classes.input}
-                {...register("last_name", { required: true })}
-              />
-              {errors.last_name && <span>This field is required</span>}
-            </label>
-            <label htmlFor="first_name" className={classes.label}>
-              <span className={classes.span}>E-mail</span>
-              <input
-                className={classes.input}
-                {...register("email", {
-                  required: true,
-                  pattern: /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,
-                })}
-              />
-              {errors.email?.type === "required" && (
-                <span>This field is required</span>
-              )}
-              {errors.email?.type === "pattern" && (
-                <span>this email doesn't match the criteria </span>
-              )}
-            </label>
+            {inputGroups.map((input, index) => (
+              <InputGroupEl key={index} {...input} />
+            ))}
+
             <input
               type="submit"
               id="submit-new-user"
@@ -137,7 +177,7 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
             />
           </form>
         </div>
-        <div className="pv2 ph4 bt b--black-30 flex justify-between items-center">
+        <div className={headerFooterClasses()}>
           <label className="cup black-80 mv3" htmlFor="create-another">
             <input
               type="checkbox"
