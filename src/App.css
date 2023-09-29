@@ -43,3 +43,25 @@ body {
 .no-focus:focus {
   outline: none;
 }
+
+.search-bar {
+  width: 320px;
+}
+
+@media screen and (max-width: 991px) {
+  body {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  body {
+    font-size: 11px;
+  }
+  .search-bar {
+    flex: 1;
+  }
+  .fab-create {
+    display: none;
+  }
+}

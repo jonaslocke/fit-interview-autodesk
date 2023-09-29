@@ -66,7 +66,7 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
 
   useEffect(() => {
     getUserId();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -75,14 +75,14 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
         className="bg-white w-100 br2 flex flex-column justify-between"
         style={{ minHeight: 300 }}
       >
-        <div className="pv3 ph4 bb b--black-30 flex justify-between items-center">
-          <h3 className="ma0 mv4">Create item</h3>
+        <div className="pv2 ph4 bb b--black-30 flex justify-between items-center">
+          <h3 className="ma0 mv3">Create item</h3>
           <i
-            className="fa-solid fa-circle-xmark cup f4 black-30 hover-black-70"
+            className="fa-solid fa-circle-xmark cup f4-l f6-m black-30 hover-black-70"
             onClick={handleClose}
           ></i>
         </div>
-        <div className="pv3 ph4">
+        <div className="pv2 ph4">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="w-50 pv4"
@@ -137,8 +137,8 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
             />
           </form>
         </div>
-        <div className="pv3 ph4 bt b--black-30 flex justify-between items-center">
-          <label className="cup black-80 mv4" htmlFor="create-another">
+        <div className="pv2 ph4 bt b--black-30 flex justify-between items-center">
+          <label className="cup black-80 mv3" htmlFor="create-another">
             <input
               type="checkbox"
               name="create-another"
@@ -149,14 +149,14 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
             <span className="ml2">Create another</span>
           </label>
           <div className="flex">
-            <Button
-              label="Cancel"
-              color="transparent"
-              onClickMethod={() => handleClose()}
-            />
+            <Button color="transparent" onClickMethod={() => handleClose()}>
+              <span>Cancel</span>
+            </Button>
             <span className="ml2"></span>
             <label htmlFor="submit-new-user">
-              <Button label={loading ? "Loading..." : "Create"} />
+              <Button>
+                <>{loading ? "Loading..." : "Create"}</>
+              </Button>
             </label>
           </div>
         </div>

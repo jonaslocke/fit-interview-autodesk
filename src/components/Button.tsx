@@ -2,7 +2,7 @@ import React, { FC } from "react";
 type Props = {
   leftIcon?: JSX.Element;
   rightIcon?: JSX.Element;
-  label?: string;
+  children?: JSX.Element;
   onClickMethod?: () => void;
   color?: "primary" | "secondary" | "transparent";
 };
@@ -10,7 +10,7 @@ type Props = {
 export const Button: FC<Props> = ({
   leftIcon,
   rightIcon,
-  label,
+  children,
   onClickMethod,
   color = "primary",
 }) => {
@@ -26,19 +26,12 @@ export const Button: FC<Props> = ({
   };
   return (
     <div
-      className={`${classes()} ph3 pv2 f4 cup`}
+      className={`${classes()} ph3 pv2 f4-l f6-m cup`}
       onClick={() => (onClickMethod ? onClickMethod() : null)}
     >
       {leftIcon ? leftIcon : null}
-      {label && (
-        <span
-          className={`${leftIcon ? "ml3" : ""} ${
-            rightIcon ? "mr3" : ""
-          } lh-copy fw5`}
-        >
-          {label}
-        </span>
-      )}
+
+      {children && <span className="lh-copy fw5">{children}</span>}
 
       {rightIcon ? rightIcon : null}
     </div>

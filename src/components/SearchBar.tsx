@@ -8,7 +8,7 @@ export const SearchBar = () => {
     setSearch("");
   };
   return (
-    <form onSubmit={(event) => handleSubmit(event)} className="flex">
+    <form onSubmit={(event) => handleSubmit(event)} className="flex search-bar">
       {search.length > 0 && (
         <label htmlFor="submit" className="mh2 flex items-center grow">
           <i className="fa-solid fa-circle-xmark f3 orange cup"></i>
@@ -18,9 +18,8 @@ export const SearchBar = () => {
         type="text"
         value={search}
         onChange={(event) => setSearch(event.target.value)}
-        className="input-reset lh-copy ph2 b--secondary no-focus"
+        className="input-reset lh-copy ph2 b--secondary no-focus pv2 w-100"
         placeholder="search by first/last name or email"
-        style={{ width: 320 }}
       />
       <input type="submit" id="submit" name="submit" hidden />
     </form>
