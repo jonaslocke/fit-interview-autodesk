@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useToastie } from "../hooks/useToastie";
 import { useUserData } from "../hooks/useUserData";
 import { User } from "../types";
 import { Button } from "./Button";
@@ -10,6 +11,8 @@ type Props = {
 
 export const NewUserModal: FC<Props> = ({ closeMethod }) => {
   const { fetchUsers, createUser } = useUserData();
+  const { success, error } = useToastie();
+
   const [id, setId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [keepOpen, setKeepOpen] = useState(false);
@@ -21,6 +24,7 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
     }
   };
   const handleClose = () => {
+    reset();
     closeMethod();
   };
 
@@ -28,6 +32,7 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<User>();
 
   const onSubmit: SubmitHandler<User> = async (user) => {
@@ -36,15 +41,16 @@ export const NewUserModal: FC<Props> = ({ closeMethod }) => {
     const response = await createUser(user);
 
     if (!response.ok) {
-      alert("Some went wrong on this creation");
+      error("Some went wrong on this creation");
       setLoading(false);
       return;
     }
 
     const userData = await response.json();
-
-    //TODO user feedback
     console.log(userData);
+
+    success("User created successfully");
+    reset();
 
     setLoading(false);
     if (!keepOpen) {

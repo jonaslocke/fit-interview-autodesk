@@ -1,8 +1,15 @@
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { Dashboard } from "./components/Dashboard";
 
 function App() {
-  return <Dashboard />;
+  return (
+    <>
+      <ToastContainer pauseOnFocusLoss={false} />
+      <Dashboard />;
+    </>
+  );
 }
 
 export default App;
