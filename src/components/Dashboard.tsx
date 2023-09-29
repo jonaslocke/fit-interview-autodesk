@@ -36,6 +36,7 @@ export const Dashboard: FC<Props> = () => {
 
   useEffect(() => {
     getUsers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
