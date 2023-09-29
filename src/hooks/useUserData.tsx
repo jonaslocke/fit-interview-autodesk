@@ -1,7 +1,7 @@
 import { User } from "../types";
 import usersMock from "../mocked.json";
 
-const isMocked = false;
+const isMocked = true;
 
 export const useUserData = () => {
   const api = `https://autodesk.free.beeceptor.com/users`;

@@ -4,6 +4,7 @@ import { useUserData } from "../hooks/useUserData";
 import { User } from "../types";
 import { ActionsBar } from "./ActionsBar";
 import { NewUserModal } from "./NewUserModal";
+import { DataTable } from "./DataTable";
 type Props = {};
 
 export const Dashboard: FC<Props> = () => {
@@ -46,40 +47,7 @@ export const Dashboard: FC<Props> = () => {
         <ActionsBar />
         {users.length ? (
           <div className="w-100 bg-white pa3 br2 mt3 f4-l f6-m overflow-x-auto">
-            <table className="w-100">
-              <thead>
-                <tr>
-                  {headers.map((head, index) => (
-                    <th key={index} className="bg-black-20 pv2">
-                      {head}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {filteredUsers.map((user, rIndex) => (
-                  <tr key={user.id} className="tc">
-                    {Object.values(user).map((prop, index) => (
-                      <td
-                        key={index}
-                        className={`pv2 ${
-                          rIndex % 2 === 1 ? "bg-black-10" : ""
-                        }`}
-                      >
-                        {prop}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-                {filteredUsers.length === 0 && (
-                  <tr>
-                    <td colSpan={headers.length} className="tc">
-                      No data to show
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+            <DataTable headers={headers} users={filteredUsers} />
           </div>
         ) : (
           <NoData />
